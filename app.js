@@ -5,8 +5,8 @@ require('dotenv').config();
 const Sensor = require('./lib/am2302');
 const Influx = require('./lib/influx');
 const SlackBot = require('slackbots');
-
 const Delay = process.env.UPDATE_FREQUENCY;
+let errorCount = 0;
 
 // Create & Configure Slackbot
 let bot = new SlackBot({
@@ -22,12 +22,20 @@ let params = {
 
 function getData() {
 	Sensor.getJSON().then(Influx.writeInflux).then(function() {
-		setTimeout(getData, Delay);
+        setTimeout(getData, Delay);
+        errorCount = 0;
+
 	}).catch(function(e) {
-		console.log(e.message);
-		bot.postMessageToGroup(channel, e.message);
-		// Retry
-		setTimeout(getData, Delay);
+        // After 5 Errors, Stop Reporting & Die
+        if (errorCount < 5) {
+            console.log(e.message);
+            bot.postMessageToGroup(channel, e.message);
+            setTimeout(getData, Delay);
+            errorCount++;
+        } else {
+            console.log("Error Limit Exceeded");
+            bot.postMessageToGroup(channel, "Error Limit Exceeded, You Should Restart Me When You Fix Me ");
+        }
 	});
 };
 
