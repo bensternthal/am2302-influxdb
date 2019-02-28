@@ -28,8 +28,8 @@ function getData() {
 	}).catch(function(e) {
         // After 5 Errors, Stop Reporting & Die
         if (errorCount < 5) {
-            console.log(e.message);
-            bot.postMessageToGroup(channel, e.message);
+            console.log(e);
+            bot.postMessageToGroup(channel, e);
             setTimeout(getData, Delay);
             errorCount++;
         } else {
