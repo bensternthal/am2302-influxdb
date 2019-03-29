@@ -29,7 +29,7 @@ function getData() {
         // After 5 Errors, Stop Reporting & Die
         if (errorCount < 5) {
             console.log(e);
-            bot.postMessageToGroup(channel, e);
+            //bot.postMessageToGroup(channel, e);
             setTimeout(getData, Delay);
             errorCount++;
         } else {
