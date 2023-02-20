@@ -7,4 +7,4 @@ AM2302 Sensor & Rasberry Pi & InfluxDB
 1. Install http://www.airspayce.com/mikem/bcm2835/
 2. ``npm install``
 3. Copy ``env.dist`` to ``.env`` and populate
-4. Run ``node app.js``
+4. Run ``node app.js`` 
